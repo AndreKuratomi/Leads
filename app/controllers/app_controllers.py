@@ -63,21 +63,12 @@ def create_lead():
 
 def get_leads():
     try:
-        # query = .query.filter_by(asc(Lead.visits))
-        # .order_by(Lead.visits)
+        query = Lead.query.order_by(Lead.visits.desc()).all()
 
-        # https://riptutorial.com/sqlalchemy/example/12146/order-by
-
-        # all_leads = current_app.db.session.query.order_by(desc(Lead.visits))
-        all_leads = Lead.query.all()
-        # set_trace()
-
-        if len(all_leads) == 0:
+        if len(query) == 0:
             raise NotFoundError
 
-        # listar todos os leads por ordem de visitas em ordem decrescente
-        # tratar erro: nenhum dado encontrado (= lista vazia?)
-        return jsonify(all_leads), 200
+        return jsonify(query), 200
 
     except NotFoundError as nfe:
         return nfe.message, 404
